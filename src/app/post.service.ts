@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Post } from "./post.model";
 import { map, catchError } from "rxjs/operators";
@@ -28,8 +28,19 @@ export class PostService {
   }
 
   fetchPost() {
+    let SearchParams = new HttpParams();
+    SearchParams = SearchParams.append("print", "pretty");
+    SearchParams = SearchParams.append("custom", "key");
     return this.http
-      .get<{[key: string]: Post}>("https://ng-practice-ac176-default-rtdb.firebaseio.com/post.json")
+      .get<{[key: string]: Post}>("https://ng-practice-ac176-default-rtdb.firebaseio.com/post.json",
+      {
+        headers: new HttpHeaders({
+          "custom-Header": "Hello"
+        }),
+        //params: new HttpParams().set('print', 'pretty')
+        params: SearchParams
+      }
+      )
       //.pipe(map((responseData: {[key: string]: Post}) => {
       .pipe( //this can be set in a Service for better code
         map(responseData => {
