@@ -2,10 +2,13 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Post } from "./post.model";
 import { map } from "rxjs/operators";
+import { Subject } from "rxjs";
 
 @Injectable({ providedIn: "root" })
 //can also be provied in the providers array in the module
 export class PostService {
+  error = new Subject<string>();
+
   //http request methods
   constructor(private http: HttpClient) {}
 
@@ -19,6 +22,8 @@ export class PostService {
       )
       .subscribe((responseData) => {
         console.log(responseData);
+      }, error => {
+        this.error.next(error.message);
       });
   }
 
