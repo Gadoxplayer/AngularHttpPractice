@@ -41,4 +41,7 @@ export class PostService {
     //   });
     // since im returning this now no http request is send because there is none interested, need tosubscribe to it in the component i need it
   }
+  deletePost() {
+    return this.http.delete('https://ng-practice-ac176-default-rtdb.firebaseio.com/post.json');
+  }
 }

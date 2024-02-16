@@ -12,6 +12,7 @@ import { PostService } from "./post.service";
 export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
   isFetching = false;
+  error = null;
 
   constructor(private http: HttpClient, private postService: PostService) {}
 
@@ -20,6 +21,8 @@ export class AppComponent implements OnInit {
     this.postService.fetchPost().subscribe(post => {
       this.isFetching = false;
       this.loadedPosts = post;
+    }, error => {
+      this.error = error.message;
     });
   }
 
@@ -43,11 +46,28 @@ export class AppComponent implements OnInit {
     this.postService.fetchPost().subscribe(post => {
       this.isFetching = false;
       this.loadedPosts = post;
+    }, error => {
+        this.error = error.message;
+        console.log(error);
     });
   }
 
   onClearPosts() {
     // Send Http request
+//my apoproach
+    // this.http.delete<{[key: string]: Post}>("https://ng-practice-ac176-default-rtdb.firebaseio.com/post.json")
+    //   .subscribe((resdata) => {
+    //     console.log(resdata);
+    //   });
+    //   this.isFetching = true;
+    //   this.postService.fetchPost().subscribe(post => {
+    //     this.isFetching = false;
+    //     this.loadedPosts = post;
+    //   });
+    this.postService.deletePost().subscribe(() => {
+      //this function here will only run if succede
+      this.loadedPosts = [];
+    });
   }
 
 }
